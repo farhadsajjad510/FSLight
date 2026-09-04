@@ -19,7 +19,29 @@ const menuHTML = menu.map(item => `
 `).join("");
 
 document.querySelector("#app").innerHTML = `
+<div id="fsIntro">
+<img src="/assets/logo.png">
+<h1>FarhadAIStudio</h1>
+<p>Innovation • Creativity • Technology</p>
+
+<div class="loading-bar">
+<div class="loading-fill"></div>
+</div>
+
+<div class="loading-text">
+Initializing FS Light...
+</div>
+
+</div>
+
+
   <div class="app">
+
+<div class="corner-brand">
+  <img src="/assets/logo.png" alt="FarhadAIStudio">
+  <span>FarhadAIStudio</span>
+</div>
+
 
     <aside class="sidebar" id="sidebar">
       <div class="logo">
@@ -594,3 +616,124 @@ getBatteryLevel().then(level => {
   document.getElementById("battery").textContent =
     level === "--" ? "--" : level + "%";
 });
+
+/* =========================
+   GAMES (Coming Soon)
+========================= */
+
+const appSection = document.querySelector(
+'.settings-section:nth-of-type(2)'
+);
+
+appSection.insertAdjacentHTML(
+'beforeend',
+`
+<button class="settings-action" id="gamesAction">
+  <span class="setting-icon">🎮</span>
+
+  <span>
+    <strong>Games</strong>
+    <small>Coming Soon</small>
+  </span>
+
+  <b>›</b>
+</button>
+`
+);
+
+document.getElementById("gamesAction").onclick = () => {
+
+  alert(
+`🎮 Games
+
+Coming Soon...
+
+Stay tuned with FarhadAIStudio.
+
+Follow our Official WhatsApp Channel for upcoming games and updates.`
+  );
+
+};
+
+/* =========================
+   GAMES MODAL
+========================= */
+
+const gamesModalHTML = `
+<div class="about-modal" id="gamesModal">
+
+  <div class="about-backdrop" id="gamesBackdrop"></div>
+
+  <div class="about-card">
+
+    <button class="about-close" id="gamesClose">✕</button>
+
+    <div class="about-logo">
+      <div class="about-logo-glow">🎮</div>
+    </div>
+
+    <h2>Games</h2>
+    <p class="about-version">Coming Soon</p>
+
+    <div class="about-divider"></div>
+
+    <p class="about-description">
+      Amazing mini games are currently under development.
+      Stay tuned for exciting updates from
+      <strong>FarhadAIStudio</strong>.
+    </p>
+
+    <button class="whatsapp-card" id="gamesWhatsapp">
+      <div class="whatsapp-icon">📢</div>
+
+      <div class="whatsapp-text">
+        <strong>Official WhatsApp Channel</strong>
+        <span>Stay updated with new games</span>
+      </div>
+
+      <div class="whatsapp-arrow">›</div>
+    </button>
+
+  </div>
+</div>
+`;
+
+document.body.insertAdjacentHTML("beforeend", gamesModalHTML);
+
+const gamesModal = document.getElementById("gamesModal");
+
+document.getElementById("gamesAction").onclick = () => {
+  gamesModal.classList.add("show");
+};
+
+document.getElementById("gamesClose").onclick = () =>
+  gamesModal.classList.remove("show");
+
+document.getElementById("gamesBackdrop").onclick = () =>
+  gamesModal.classList.remove("show");
+
+document.getElementById("gamesWhatsapp").onclick = () => {
+  window.open(
+    "https://whatsapp.com/channel/0029Vb8Zqnt6LwHu9naubY0c",
+    "_blank"
+  );
+};
+
+
+/* ===== SPLASH AUTO HIDE ===== */
+
+window.addEventListener("load", () => {
+  const splash = document.getElementById("fsIntro");
+
+  if (!splash) return;
+
+  setTimeout(() => {
+    splash.style.opacity = "0";
+
+    setTimeout(() => {
+      splash.remove();
+    }, 500);
+
+  }, 2500);
+});
+

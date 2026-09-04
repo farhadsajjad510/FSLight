@@ -1,27 +1,55 @@
+import { Capacitor } from "@capacitor/core";
+import { getMode, setMode } from "./modeState.js";
+
+const Flashlight = Capacitor.isNativePlatform()
+  ? Capacitor.registerPlugin("Flashlight")
+  : null;
+
 export function initSOS(btn, status) {
+
   let timer = null;
   let state = false;
 
-  btn.onclick = () => {
+  btn.onclick = async () => {
+
+    if (Capacitor.isNativePlatform() && Flashlight) {
+
+      try {
+
+        if (getMode() === "sos") {
+          await Flashlight.stopSOS();
+          setMode("off");
+          status.textContent = "SOS MODE OFF";
+        } else {
+          await Flashlight.startSOS();
+          setMode("sos");
+          status.textContent = "SOS MODE ON";
+        }
+
+      } catch (e) {
+        console.error(e);
+        status.textContent = "SOS unavailable";
+      }
+
+      return;
+    }
+
+    // Browser fallback
     if (timer) {
       clearInterval(timer);
       timer = null;
       document.body.classList.remove("sos-flash");
-      status.textContent = "SOS OFF";
+      setMode("off");
+      status.textContent = "SOS MODE OFF";
       return;
     }
-
-    const proceed = window.confirm(
-      "SOS uses flashing light. Stop if you feel uncomfortable."
-    );
-
-    if (!proceed) return;
 
     timer = setInterval(() => {
       state = !state;
       document.body.classList.toggle("sos-flash", state);
     }, 400);
 
+    setMode("sos");
     status.textContent = "SOS MODE ON";
   };
 }

@@ -1,4 +1,5 @@
 import { Capacitor } from "@capacitor/core";
+import { getMode, setMode } from "./modeState.js";
 
 let nativeFlashlight = null;
 
@@ -7,38 +8,47 @@ if (Capacitor.isNativePlatform()) {
 }
 
 export function initFlashlight(button, status, icon) {
-  let state = false;
+
+  function updateUI(on) {
+    button.textContent = on ? "Turn OFF" : "Turn ON";
+    status.textContent = on ? "Flashlight ON" : "Flashlight OFF";
+    icon.style.filter = on
+      ? "drop-shadow(0 0 60px #00ff99)"
+      : "drop-shadow(0 0 20px #00e5ff)";
+  }
+
+  updateUI(false);
 
   button.addEventListener("click", async () => {
     try {
-      if (Capacitor.isNativePlatform() && nativeFlashlight) {
-        if (state) {
+
+      const mode = getMode();
+
+      if (mode === "torch") {
+        if (Capacitor.isNativePlatform() && nativeFlashlight) {
           await nativeFlashlight.turnOff();
-        } else {
-          await nativeFlashlight.turnOn();
         }
+
+        setMode("off");
+        updateUI(false);
+        return;
       }
 
-      state = !state;
+      if (Capacitor.isNativePlatform() && nativeFlashlight) {
+        await nativeFlashlight.turnOn();
+      }
 
-      button.textContent = state ? "Turn OFF" : "Turn ON";
-      status.textContent = state
-        ? "Flashlight ON"
-        : "Flashlight OFF";
-
-      icon.style.filter = state
-        ? "drop-shadow(0 0 60px #00ff99)"
-        : "drop-shadow(0 0 20px #00e5ff)";
+      setMode("torch");
+      updateUI(true);
 
     } catch (error) {
       console.error("Flashlight error:", error);
 
-      state = false;
-      button.textContent = "Turn ON";
+      setMode("off");
+      updateUI(false);
       status.textContent = "Flashlight unavailable";
-      icon.style.filter = "drop-shadow(0 0 20px #00e5ff)";
     }
   });
 
-  return () => state;
+  return getMode;
 }

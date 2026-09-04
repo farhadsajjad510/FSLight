@@ -47,7 +47,13 @@
 
         </service>
 
-</application>
+
+        <activity
+            android:name=".QuickActionsActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBarLaunch"/>
+
+    </application>
 
     <!-- Permissions -->
 
