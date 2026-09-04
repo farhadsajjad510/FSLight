@@ -46,12 +46,10 @@ public class FlashlightTileService extends TileService {
             return;
         }
 
-        Intent intent = new Intent(this,
-                com.farhadaistudio.fslight.QuickActionsActivity.class);
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        startActivityAndCollapse(intent);
+        toggleFlashlight();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            updateTile();
+        }
     }
 
     private void toggleFlashlight() {
