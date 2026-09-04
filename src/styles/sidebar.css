@@ -1,0 +1,87 @@
+
+/* =========================
+.menu-more{
+  display:none;
+  animation:menuReveal .22s ease;
+}
+
+.menu-more.show{
+  display:block;
+}
+
+.see-more-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin-top:5px;
+  padding:11px 13px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:13px;
+  background:rgba(255,255,255,.025);
+  color:var(--muted);
+  cursor:pointer;
+  text-align:left;
+  font-size:12px;
+  transition:.2s ease;
+}
+
+.see-more-btn:hover{
+  background:rgba(0,229,255,.06);
+  color:var(--text);
+}
+
+.see-more-btn .menu-icon{
+  width:24px;
+  text-align:center;
+  font-size:17px;
+}
+
+.see-more-arrow{
+  margin-left:auto;
+  font-size:17px;
+  transition:transform .2s ease;
+}
+
+.see-more-btn.expanded{
+  color:var(--text);
+  border-color:rgba(0,229,255,.12);
+}
+
+.menu-more .menu-btn{
+  animation:menuReveal .22s ease both;
+}
+
+@keyframes menuReveal{
+  from{
+    opacity:0;
+    transform:translateY(-5px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* FORCE HIDE EXTRA SIDEBAR TOOLS */
+.sidebar .menu-more{
+  display:none !important;
+}
+
+.sidebar .menu-more.show{
+  display:block !important;
+}
+
+
+.sidebar nav .menu-more {
+  display: none;
+  overflow: hidden;
+}
+
+.sidebar nav .menu-more.show {
+  display: block;
+}
+
+.sidebar nav .see-more-btn {
+  display: flex;
+}
