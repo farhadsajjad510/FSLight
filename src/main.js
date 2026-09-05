@@ -39,7 +39,7 @@ Initializing FS Light...
 
 <div class="corner-brand">
   <img src="/assets/logo.png" alt="FarhadAIStudio">
-  <span>FarhadAIStudio</span>
+  <span id="cornerBrandText"></span>
 </div>
 
 
@@ -239,6 +239,36 @@ const status = document.getElementById("status");
 const bulb = document.getElementById("bulb");
 
 initFlashlight(toggle, status, bulb);
+
+const brandText = document.getElementById("cornerBrandText");
+
+if (brandText) {
+
+  const text = "FarhadAIStudio";
+  let i = 0;
+  let deleting = false;
+
+  function animateBrand() {
+
+    if (!deleting) {
+      brandText.textContent = text.slice(0, i++);
+      if (i > text.length) {
+        deleting = true;
+        return setTimeout(animateBrand, 1000);
+      }
+    } else {
+      brandText.textContent = text.slice(0, --i);
+      if (i < 0) {
+        deleting = false;
+        i = 0;
+      }
+    }
+
+    setTimeout(animateBrand, deleting ? 70 : 120);
+  }
+
+  animateBrand();
+}
 
 
 /* =========================

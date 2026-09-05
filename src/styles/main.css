@@ -1306,3 +1306,53 @@ from{text-shadow:0 0 8px #00e5ff;}
 to{text-shadow:0 0 24px #00e5ff;}
 }
 
+
+#cornerBrandText::after{
+content:"|";
+margin-left:2px;
+animation:blink .8s infinite;
+}
+
+@keyframes blink{
+50%{opacity:0;}
+}
+
+
+#cornerBrandText{
+font-weight:800;
+font-size:14px;
+letter-spacing:.8px;
+background:linear-gradient(
+90deg,
+#00e5ff,
+#00ff99,
+#ffd54f,
+#ff4fd8,
+#00e5ff
+);
+background-size:300% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:
+gradientMove 3s linear infinite;
+text-shadow:
+0 0 10px rgba(0,229,255,.6),
+0 0 20px rgba(0,255,153,.4);
+}
+
+#cornerBrandText::after{
+content:"|";
+color:#00e5ff;
+-webkit-text-fill-color:#00e5ff;
+animation:blink .8s infinite;
+}
+
+@keyframes gradientMove{
+0%{background-position:0%;}
+100%{background-position:300%;}
+}
+
+@keyframes blink{
+50%{opacity:0;}
+}
+
