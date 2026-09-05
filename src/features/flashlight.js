@@ -1,5 +1,6 @@
 import { Capacitor } from "@capacitor/core";
 import { getMode, setMode } from "./modeState.js";
+import { playClick } from "../utils/sound.js";
 
 let nativeFlashlight = null;
 
@@ -20,6 +21,7 @@ export function initFlashlight(button, status, icon) {
   updateUI(false);
 
   button.addEventListener("click", async () => {
+    playClick();
     try {
 
       const mode = getMode();

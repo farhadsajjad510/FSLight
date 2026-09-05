@@ -1,5 +1,6 @@
 import { Capacitor } from "@capacitor/core";
 import { getMode, setMode } from "./modeState.js";
+import { playClick } from "../utils/sound.js";
 
 const Flashlight = Capacitor.isNativePlatform()
   ? Capacitor.registerPlugin("Flashlight")
@@ -11,6 +12,7 @@ export function initStrobe(btn, status) {
   let state = false;
 
   btn.onclick = async () => {
+    playClick();
 
     if (Capacitor.isNativePlatform() && Flashlight) {
 

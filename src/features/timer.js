@@ -1,7 +1,9 @@
+import { playClick } from "../utils/sound.js";
 export function initTimer(btn, status) {
   let timer = null;
 
   btn.onclick = () => {
+    playClick();
     if (timer) {
       clearTimeout(timer);
       timer = null;

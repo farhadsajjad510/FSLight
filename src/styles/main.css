@@ -1356,3 +1356,210 @@ animation:blink .8s infinite;
 50%{opacity:0;}
 }
 
+
+/* ===== FS LUDO ===== */
+
+.ludo-grid{
+display:grid;
+grid-template-columns:repeat(15,22px);
+grid-template-rows:repeat(15,22px);
+gap:2px;
+justify-content:center;
+margin:18px auto;
+}
+
+.cell{
+width:22px;
+height:22px;
+background:#20242f;
+border-radius:4px;
+}
+
+.red-home{background:#ff4d4d;}
+.green-home{background:#36d66b;}
+.blue-home{background:#3d8bff;}
+.yellow-home{background:#ffd93d;}
+
+.path{
+background:#ffffff;
+}
+
+.center{
+background:#9b59ff;
+border-radius:50%;
+}
+
+
+.player-token{
+width:14px;
+height:14px;
+background:#ff2d55;
+border:2px solid #fff;
+border-radius:50%;
+margin:auto;
+margin-top:4px;
+box-shadow:0 0 8px #ff2d55;
+}
+
+
+/* ========= Premium Clock Card ========= */
+
+.clock-card{
+  margin-top:18px;
+  padding:16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.clock-time{
+  font-size:42px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-align:center;
+  color:#fff;
+  text-shadow:
+    0 0 8px #00e5ff,
+    0 0 18px #00e5ff;
+}
+
+.clock-bottom{
+  margin-top:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.clock-day{
+  font-size:15px;
+  font-weight:700;
+  color:#ffffff;
+}
+
+.clock-date{
+  margin-top:2px;
+  font-size:12px;
+  color:#b8c4d6;
+}
+
+.battery-pill{
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(0,229,255,.12);
+  border:1px solid rgba(0,229,255,.35);
+  color:#00e5ff;
+  font-weight:700;
+}
+
+@keyframes clockGlow{
+  0%,100%{
+    text-shadow:
+      0 0 8px #00e5ff,
+      0 0 18px #00e5ff;
+  }
+
+  50%{
+    text-shadow:
+      0 0 12px #7df9ff,
+      0 0 28px #00e5ff;
+  }
+}
+
+.clock-time{
+  animation:clockGlow 2s ease-in-out infinite;
+}
+
+
+
+/* ===== Header Fix ===== */
+
+.brand{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+margin-top:12px;
+flex-wrap:wrap;
+}
+
+.brand h1{
+margin:0;
+font-size:52px;
+line-height:1;
+font-weight:900;
+}
+
+.subtitle{
+margin-top:8px;
+margin-bottom:22px;
+text-align:center;
+font-size:20px;
+opacity:.9;
+}
+
+.flash-card{
+margin-top:22px;
+}
+
+@media(max-width:480px){
+
+.brand h1{
+font-size:42px;
+}
+
+.subtitle{
+font-size:17px;
+}
+
+.clock-time{
+font-size:48px;
+}
+
+}
+
+
+/* ===== Premium Flash Card ===== */
+
+.flash-card{
+max-width:320px;
+margin:22px auto;
+padding:22px;
+border-radius:24px;
+background:linear-gradient(180deg,#151c28,#0f141d);
+border:1px solid rgba(0,229,255,.18);
+box-shadow:
+0 10px 30px rgba(0,0,0,.35),
+0 0 18px rgba(0,229,255,.10);
+text-align:center;
+}
+
+.flash-icon{
+font-size:58px;
+margin-bottom:16px;
+filter:drop-shadow(0 0 10px rgba(0,229,255,.45));
+}
+
+#toggle{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+font-size:17px;
+font-weight:700;
+cursor:pointer;
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+color:#fff;
+box-shadow:0 0 16px rgba(0,170,255,.35);
+}
+
+#toggle:active{
+transform:scale(.98);
+}
+
+#status{
+margin-top:16px;
+font-size:16px;
+color:#d7faff;
+}
+

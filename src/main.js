@@ -1,14 +1,21 @@
 import "./styles/main.css";
 
 import { menu } from "./data/menu.js";
-import { getCurrentTime } from "./utils/time.js";
+import { getClockData } from "./utils/time.js";
 import { getBatteryLevel } from "./utils/battery.js";
+import { getGreeting } from "./utils/greeting.js";
 
 import { initFlashlight } from "./features/flashlight.js";
 import { initScreenLight } from "./features/screenLight.js";
 import { initSOS } from "./features/sos.js";
 import { initStrobe } from "./features/strobe.js";
 import { initTimer } from "./features/timer.js";
+import { openLudoHome, openLevelSelect } from "./games/ludo/index.js";
+import { createBoard } from "./games/ludo/board.js";
+import { createGame } from "./games/ludo/core/board.js";
+
+import { playClick } from "./utils/sound.js";
+import { vibrate } from "./utils/haptics.js";
 
 
 const menuHTML = menu.map(item => `
@@ -143,7 +150,7 @@ Initializing FS Light...
             <span class="setting-icon">ℹ️</span>
             <span>
               <strong>About FS Light</strong>
-              <small>FarhadAIStudio • Version 1.0</small>
+              <small>FarhadAIStudio • Version 1.2 Final</small>
             </span>
             <b>›</b>
           </button>
@@ -196,6 +203,9 @@ Initializing FS Light...
 
       <p class="subtitle">Smart Light • Simple • Powerful</p>
 
+      
+
+      
       <div class="flash-card">
 
         <div id="bulb" class="flash-icon">🔦</div>
@@ -211,7 +221,7 @@ Initializing FS Light...
 
       </div>
 
-      <p class="footer">Powered by FarhadAIStudio</p>
+<p class="footer">Powered by FarhadAIStudio</p>
 
     </main>
 
@@ -458,7 +468,7 @@ const aboutModalHTML = `
       </div>
 
       <h2>FS Light</h2>
-      <p class="about-version">Version 1.0</p>
+      <p class="about-version">Version 1.2 Final</p>
 
       <div class="about-divider"></div>
 
@@ -563,10 +573,12 @@ darkModeToggle.onchange = () => {
 
 soundToggle.onchange = () => {
   saveSetting("sound", soundToggle.checked);
+  playClick();
 };
 
 vibrationToggle.onchange = () => {
   saveSetting("vibration", vibrationToggle.checked);
+  vibrate(30);
 };
 
 rememberToggle.onchange = () => {
@@ -574,6 +586,11 @@ rememberToggle.onchange = () => {
 };
 
 resetSettings.onclick = () => {
+
+  if (!confirm("Reset all FS Light settings to default?")) {
+    return;
+  }
+
   localStorage.removeItem("fslight_darkMode");
   localStorage.removeItem("fslight_sound");
   localStorage.removeItem("fslight_vibration");
@@ -585,6 +602,8 @@ resetSettings.onclick = () => {
   rememberToggle.checked = false;
 
   document.body.classList.remove("light-mode");
+
+  alert("✅ Settings have been reset.");
 };
 
 settingsClose.onclick = () => {
@@ -636,119 +655,39 @@ buttons.forEach(button => {
 });
 
 function updateClock() {
-  document.getElementById("clock").textContent = getCurrentTime();
+
+  const greeting=document.getElementById("greeting");
+  if(greeting) greeting.textContent=getGreeting();
+
+
+  const data = getClockData();
+
+  const clock=document.getElementById("clock");
+
+  clock.textContent=data.time;
+  clock.classList.toggle("blink");
+
+  const day = document.getElementById("clockDay");
+  if (day) day.textContent = data.day.toUpperCase();
+
+  const date = document.getElementById("clockDate");
+  if (date) date.textContent = data.date.toUpperCase();
+
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
-getBatteryLevel().then(level => {
+async function updateBattery() {
+  const level = await getBatteryLevel();
+
   document.getElementById("battery").textContent =
     level === "--" ? "--" : level + "%";
-});
+}
 
-/* =========================
-   GAMES (Coming Soon)
-========================= */
+updateBattery();
 
-const appSection = document.querySelector(
-'.settings-section:nth-of-type(2)'
-);
-
-appSection.insertAdjacentHTML(
-'beforeend',
-`
-<button class="settings-action" id="gamesAction">
-  <span class="setting-icon">🎮</span>
-
-  <span>
-    <strong>Games</strong>
-    <small>Coming Soon</small>
-  </span>
-
-  <b>›</b>
-</button>
-`
-);
-
-document.getElementById("gamesAction").onclick = () => {
-
-  alert(
-`🎮 Games
-
-Coming Soon...
-
-Stay tuned with FarhadAIStudio.
-
-Follow our Official WhatsApp Channel for upcoming games and updates.`
-  );
-
-};
-
-/* =========================
-   GAMES MODAL
-========================= */
-
-const gamesModalHTML = `
-<div class="about-modal" id="gamesModal">
-
-  <div class="about-backdrop" id="gamesBackdrop"></div>
-
-  <div class="about-card">
-
-    <button class="about-close" id="gamesClose">✕</button>
-
-    <div class="about-logo">
-      <div class="about-logo-glow">🎮</div>
-    </div>
-
-    <h2>Games</h2>
-    <p class="about-version">Coming Soon</p>
-
-    <div class="about-divider"></div>
-
-    <p class="about-description">
-      Amazing mini games are currently under development.
-      Stay tuned for exciting updates from
-      <strong>FarhadAIStudio</strong>.
-    </p>
-
-    <button class="whatsapp-card" id="gamesWhatsapp">
-      <div class="whatsapp-icon">📢</div>
-
-      <div class="whatsapp-text">
-        <strong>Official WhatsApp Channel</strong>
-        <span>Stay updated with new games</span>
-      </div>
-
-      <div class="whatsapp-arrow">›</div>
-    </button>
-
-  </div>
-</div>
-`;
-
-document.body.insertAdjacentHTML("beforeend", gamesModalHTML);
-
-const gamesModal = document.getElementById("gamesModal");
-
-document.getElementById("gamesAction").onclick = () => {
-  gamesModal.classList.add("show");
-};
-
-document.getElementById("gamesClose").onclick = () =>
-  gamesModal.classList.remove("show");
-
-document.getElementById("gamesBackdrop").onclick = () =>
-  gamesModal.classList.remove("show");
-
-document.getElementById("gamesWhatsapp").onclick = () => {
-  window.open(
-    "https://whatsapp.com/channel/0029Vb8Zqnt6LwHu9naubY0c",
-    "_blank"
-  );
-};
-
+setInterval(updateBattery, 5000);
 
 /* ===== SPLASH AUTO HIDE ===== */
 

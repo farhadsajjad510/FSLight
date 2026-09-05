@@ -1,7 +1,9 @@
+import { playClick } from "../utils/sound.js";
 export function initScreenLight(btn, status) {
   let active = false;
 
   btn.onclick = () => {
+    playClick();
     active = !active;
 
     if (active) {
